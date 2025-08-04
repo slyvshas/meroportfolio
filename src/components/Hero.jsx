@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Linkedin, Mail, PenTool } from 'lucide-react';
+import { Github, Linkedin, Mail, PenTool, Twitter, Instagram } from 'lucide-react';
 
 const Hero = () => {
   const handleDownload = () => {
@@ -75,41 +75,47 @@ const Hero = () => {
 
           {/* Social Links with enhanced styling */}
           <div className="flex justify-center flex-wrap gap-4 md:gap-6 mb-16">
-            <a 
-              href="https://github.com/slyvshas" 
-              className="group p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
+            <a
+              href="https://github.com/slyvshas"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
             >
-              <Github size={28} className="group-hover:text-[#D1B2FF] transition-colors duration-300" />
+              <Github size={24} className="group-hover:text-[#D1B2FF] transition-colors duration-300" />
             </a>
-            <a 
-              href="https://www.linkedin.com/in/sasankkarki" 
-              className="group p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
+            <a
+              href="https://linkedin.com/in/sasank-karki"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
             >
-              <Linkedin size={28} className="group-hover:text-[#D1B2FF] transition-colors duration-300" />
+              <Linkedin size={24} className="group-hover:text-[#D1B2FF] transition-colors duration-300" />
             </a>
-            <a 
-              href="mailto:sasankkarkii@gmail.com" 
-              className="group p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
+            <a
+              href="https://twitter.com/sasankkarki"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
             >
-              <Mail size={28} className="group-hover:text-[#D1B2FF] transition-colors duration-300" />
+              <Twitter size={24} className="group-hover:text-[#D1B2FF] transition-colors duration-300" />
             </a>
-            <a 
-              href="https://www.threads.com/@sasank.tech" 
-              className="group p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
+            <a
+              href="https://instagram.com/sasankkarki"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
             >
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="group-hover:text-[#D1B2FF] transition-colors duration-300"
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+              <Instagram size={24} className="group-hover:text-[#D1B2FF] transition-colors duration-300" />
+            </a>
+            <a
+              href="https://threads.net/@sasankkarki"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 hover:scale-110 hover:border-[#D1B2FF]/50 shadow-lg"
+            >
+              <svg className="w-6 h-6 group-hover:text-[#D1B2FF] transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12.006c.027 3.075.718 5.48 2.057 7.138 1.435 1.776 3.631 2.686 6.523 2.707 5.445-.016 7.691-2.61 8.818-6.078l2.056.403c-.861 3.649-2.573 6.306-5.09 7.898C16.379 24.018 14.317 24 12.186 24z"/>
+                <path d="M8.681 18.379c-1.314-1.612-1.988-3.946-2.007-6.936.019-2.998.693-5.33 2.007-6.937 1.393-1.705 3.4-2.567 5.963-2.567s4.57.862 5.963 2.567c1.314 1.607 1.988 3.939 2.007 6.937-.019 2.99-.693 5.324-2.007 6.936-1.393 1.705-3.4 2.567-5.963 2.567s-4.57-.862-5.963-2.567z"/>
               </svg>
             </a>
             <a 

@@ -44,6 +44,17 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-black relative overflow-x-hidden">
+        {/* CSS fix for backdrop-blur rendering issues */}
+        <style jsx>{`
+          * {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+          }
+          .backdrop-blur-sm, .backdrop-blur-md, .backdrop-blur-xl {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+          }
+        `}</style>
         <Navbar />
         <RouteTransition>
           <Routes>
