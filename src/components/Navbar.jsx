@@ -33,10 +33,11 @@ const Navbar = () => {
     } else {
       if (location.pathname !== '/') {
         navigate('/');
+        // Reduced delay for smoother navigation
         setTimeout(() => {
           const el = document.querySelector(item.href);
           if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }, 200);
+        }, 100); // Reduced from 200ms to 100ms
       } else {
         const el = document.querySelector(item.href);
         if (el) el.scrollIntoView({ behavior: 'smooth' });

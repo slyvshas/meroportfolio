@@ -60,9 +60,5 @@ export default function BlogDetail() {
   if (loading) return <div className="text-center text-white py-20">Loading...</div>;
   if (!post) return <div className="text-center text-white py-20">Blog post not found.</div>;
 
-  return (
-    <div className="py-20 min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900">
-      <BlogPost post={post} />
-    </div>
-  );
+  return <BlogPost post={post} />;
 } 
