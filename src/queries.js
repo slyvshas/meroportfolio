@@ -12,10 +12,10 @@ export const postsQuery = `
     },
     publishedAt,
     body,
-    categories[]->{
+    "categories": categories[]->{
       _id,
       title,
-      slug
+      "slug": slug.current
     }
   } | order(publishedAt desc)
 `;
