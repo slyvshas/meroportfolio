@@ -7,11 +7,6 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
   const { posts, loading } = usePosts();
   const [imageErrors, setImageErrors] = useState({});
 
-  // Debug logging
-  console.log('BlogList - posts:', posts);
-  console.log('BlogList - loading:', loading);
-  console.log('BlogList - posts length:', posts?.length);
-
   // Filter and search posts
   const filteredPosts = useMemo(() => {
     if (!posts || !Array.isArray(posts)) return [];
@@ -33,34 +28,11 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
     });
   }, [posts, searchTerm, selectedCategory]);
 
-  // Debug info display (moved after filteredPosts definition)
-  const debugInfo = {
-    postsLength: posts?.length || 0,
-    loading,
-    searchTerm,
-    selectedCategory,
-    viewMode,
-    filteredPostsLength: filteredPosts.length
-  };
-
-  console.log('BlogList - debug info:', debugInfo);
-  
-  // Debug individual posts
-  if (filteredPosts.length > 0) {
-    console.log('First post data:', filteredPosts[0]);
-    console.log('First post slug:', filteredPosts[0]?.slug);
-  }
-
   const handleImageError = (postId) => {
     setImageErrors(prev => ({ ...prev, [postId]: true }));
   };
 
-  const handlePostClick = (post) => {
-    console.log('Clicked post:', post);
-    console.log('Post slug:', post.slug);
-    console.log('Post title:', post.title);
-    console.log('Generated URL:', `/blog/${post.slug || 'no-slug'}`);
-  };
+
 
   if (loading) return (
     <div className="flex flex-col items-center justify-center py-20 sm:py-32">
@@ -130,8 +102,8 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
   const GridView = () => (
     <div className="grid gap-6 sm:gap-8 md:gap-12 lg:grid-cols-2 xl:grid-cols-3">
       {filteredPosts.map((post, index) => (
-        <Link to={`/blog/${post.slug || 'no-slug'}`} key={post._id} className="group block" onClick={() => handlePostClick(post)}>
-          <article className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:from-white/[0.08] hover:to-white/[0.04] hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/20 h-full flex flex-col">
+        <Link to={`/blog/${post.slug || 'no-slug'}`} key={post._id} className="group block">
+          <article className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10 backdrop-blur-sm transition-colors duration-200 hover:border-white/20 hover:from-white/[0.08] hover:to-white/[0.04] h-full flex flex-col">
             
             {/* Featured image */}
             {post.mainImage?.asset?.url && !imageErrors[post._id] ? (
@@ -248,8 +220,8 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
   const ListView = () => (
     <div className="space-y-6 sm:space-y-8">
       {filteredPosts.map((post, index) => (
-        <Link to={`/blog/${post.slug || 'no-slug'}`} key={post._id} className="group block" onClick={() => handlePostClick(post)}>
-          <article className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:from-white/[0.08] hover:to-white/[0.04] hover:scale-[1.01] hover:shadow-2xl hover:shadow-black/20">
+        <Link to={`/blog/${post.slug || 'no-slug'}`} key={post._id} className="group block">
+          <article className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10 backdrop-blur-sm transition-colors duration-200 hover:border-white/20 hover:from-white/[0.08] hover:to-white/[0.04]">
             
             <div className="p-4 sm:p-6 lg:p-8">
               {/* Categories */}
