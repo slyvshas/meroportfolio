@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { sanity } from '../sanityClient';
+import { publicSanity } from '../sanityClient';
 import { postsQuery } from '../queries';
 
 export function usePosts() {
@@ -9,14 +9,14 @@ export function usePosts() {
   useEffect(() => {
     console.log('Fetching posts with query:', postsQuery);
     console.log('Sanity client config:', {
-      projectId: sanity.config().projectId,
-      dataset: sanity.config().dataset,
-      apiVersion: sanity.config().apiVersion,
-      useCdn: sanity.config().useCdn
+      projectId: publicSanity.config().projectId,
+      dataset: publicSanity.config().dataset,
+      apiVersion: publicSanity.config().apiVersion,
+      useCdn: publicSanity.config().useCdn
     });
     
     // Test 1: Simple count query
-    sanity.fetch('count(*[_type == "post"])')
+    publicSanity.fetch('count(*[_type == "post"])')
       .then((count) => {
         console.log('Total posts count:', count);
       })
@@ -25,7 +25,7 @@ export function usePosts() {
       });
     
     // Test 2: Simple post query
-    sanity.fetch('*[_type == "post"] | order(_createdAt desc) [0...5]')
+    publicSanity.fetch('*[_type == "post"] | order(_createdAt desc) [0...5]')
       .then((testData) => {
         console.log('Simple query result:', testData);
         console.log('Simple query result length:', testData?.length || 0);
@@ -35,7 +35,7 @@ export function usePosts() {
       });
     
     // Main query
-    sanity.fetch(postsQuery)
+    publicSanity.fetch(postsQuery)
       .then((data) => {
         console.log('Fetched posts data:', data);
         console.log('Number of posts fetched:', data?.length || 0);
@@ -43,6 +43,11 @@ export function usePosts() {
       })
       .catch((error) => {
         console.error('Error fetching posts:', error);
+        // If CORS error, try with different configuration
+        if (error.message.includes('CORS') || error.message.includes('Access-Control')) {
+          console.log('CORS error detected, trying alternative approach...');
+          // You can add fallback logic here if needed
+        }
         setPosts([]);
       })
       .finally(() => setLoading(false));

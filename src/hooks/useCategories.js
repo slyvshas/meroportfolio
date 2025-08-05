@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { sanity } from '../sanityClient';
+import { publicSanity } from '../sanityClient';
 
 const categoriesQuery = `
   *[_type == "category"] | order(title asc) {
@@ -20,7 +20,7 @@ export function useCategories() {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const data = await sanity.fetch(categoriesQuery);
+        const data = await publicSanity.fetch(categoriesQuery);
         setCategories(data);
         setError(null);
       } catch (err) {

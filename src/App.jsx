@@ -9,6 +9,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import BlogPage from './components/BlogPage';
 import BlogDetail from './components/BlogDetail';
+import ErrorBoundary from './components/ErrorBoundary';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 // Loading component for smooth transitions
@@ -42,39 +43,41 @@ const RouteTransition = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-black relative overflow-x-hidden">
-        {/* CSS fix for backdrop-blur rendering issues */}
-        <style jsx>{`
-          * {
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-          }
-          .backdrop-blur-sm, .backdrop-blur-md, .backdrop-blur-xl {
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-          }
-        `}</style>
-        <Navbar />
-        <RouteTransition>
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Hero />
-                <About />
-                <Skills />
-                <Projects />
-                <Certifications />
-                <Contact />
-                <Footer />
-              </>
-            } />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogDetail />} />
-          </Routes>
-        </RouteTransition>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="min-h-screen bg-black relative overflow-x-hidden">
+          {/* CSS fix for backdrop-blur rendering issues */}
+          <style>{`
+            * {
+              -webkit-backface-visibility: hidden;
+              backface-visibility: hidden;
+            }
+            .backdrop-blur-sm, .backdrop-blur-md, .backdrop-blur-xl {
+              -webkit-transform: translateZ(0);
+              transform: translateZ(0);
+            }
+          `}</style>
+          <Navbar />
+          <RouteTransition>
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <Hero />
+                  <About />
+                  <Skills />
+                  <Projects />
+                  <Certifications />
+                  <Contact />
+                  <Footer />
+                </>
+              } />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogDetail />} />
+            </Routes>
+          </RouteTransition>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

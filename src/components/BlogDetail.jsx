@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { sanity } from '../sanityClient';
+import { publicSanity } from '../sanityClient';
 import BlogPost from './BlogPost';
 
 export default function BlogDetail() {
@@ -20,14 +20,16 @@ export default function BlogDetail() {
     setError(null);
     setPost(null);
     
-    if (!slug || slug === 'no-slug') {
-      console.error('Slug is null, undefined, or invalid');
-      setError('Invalid blog post URL');
-      setLoading(false);
-      return;
-    }
+    // Wait a bit for the router to be ready
+    const timer = setTimeout(() => {
+      if (!slug || slug === 'no-slug') {
+        console.error('Slug is null, undefined, or invalid');
+        setError('Invalid blog post URL');
+        setLoading(false);
+        return;
+      }
     
-    sanity.fetch(
+    publicSanity.fetch(
       `*[_type == "post" && slug.current == $slug][0]{
         _id,
         title,
@@ -62,6 +64,9 @@ export default function BlogDetail() {
       setError('Failed to load blog post');
       setLoading(false);
     });
+    }, 100); // Small delay to ensure router is ready
+    
+    return () => clearTimeout(timer);
   }, [slug]);
 
   if (loading) {
