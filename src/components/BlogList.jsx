@@ -1,11 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { usePosts } from '../hooks/usePosts';
 import { Link } from 'react-router-dom';
-import { Calendar, User, Clock, ArrowRight, Image as ImageIcon, Tag, Eye } from 'lucide-react';
+import { Calendar, User, Clock, ArrowRight, Image as ImageIcon, Tag, Eye, Loader2 } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 export default function BlogList({ searchTerm = '', selectedCategory = 'all', viewMode = 'grid' }) {
-  const { posts, loading } = usePosts();
+  const [currentPage, setCurrentPage] = useState(1);
   const [imageErrors, setImageErrors] = useState({});
+  const { posts, loading, error, hasMore, loadMore, refreshPosts } = usePosts(currentPage, 12);
 
   // Filter and search posts
   const filteredPosts = useMemo(() => {
@@ -31,6 +33,11 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
   const handleImageError = (postId) => {
     setImageErrors(prev => ({ ...prev, [postId]: true }));
   };
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
 
 
 
@@ -108,7 +115,7 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
             {/* Featured image */}
             {post.mainImage?.asset?.url && !imageErrors[post._id] ? (
               <div className="relative overflow-hidden aspect-video sm:aspect-[4/3]">
-                <img
+                <OptimizedImage
                   src={post.mainImage.asset.url}
                   alt={post.title}
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
@@ -286,7 +293,7 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
                 {post.mainImage?.asset?.url && !imageErrors[post._id] ? (
                   <div className="sm:col-span-1 order-first sm:order-last">
                     <div className="relative overflow-hidden rounded-xl aspect-video sm:aspect-square">
-                      <img
+                      <OptimizedImage
                         src={post.mainImage.asset.url}
                         alt={post.title}
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
@@ -361,8 +368,36 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
       {/* Render based on view mode */}
       {viewMode === 'grid' ? <GridView /> : <ListView />}
 
+      {/* Load more button */}
+      {hasMore && filteredPosts.length > 0 && (
+        <div className="flex items-center justify-center py-8 sm:py-12">
+          <button
+            onClick={() => {
+              setCurrentPage(prev => prev + 1);
+              loadMore();
+            }}
+            disabled={loading}
+            className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#D1B2FF] to-[#FFFFB2] text-black font-bold text-sm sm:text-lg rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-2xl shadow-xl overflow-hidden inline-flex items-center space-x-2 sm:space-x-3 hover:shadow-[#D1B2FF]/25 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <span>Load More Articles</span>
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
+              </>
+            )}
+            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+          </button>
+        </div>
+      )}
+
       {/* End indicator */}
-      {filteredPosts.length > 0 && (
+      {!hasMore && filteredPosts.length > 0 && (
         <div className="flex items-center justify-center py-12 sm:py-16">
           <div className="flex items-center gap-4">
             <div className="w-8 sm:w-12 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
