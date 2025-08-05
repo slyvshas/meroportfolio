@@ -7,7 +7,9 @@ import Projects from './components/Projects';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import BlogPage from './components/BlogPage';
+{/*import BlogPage from './components/BlogPage';*/}
+// Instead of importing BlogPage, use:
+import PerformanceOptimizedBlogPage from './components/PerformanceOptimizedBlogPage';
 import BlogDetail from './components/BlogDetail';
 import ErrorBoundary from './components/ErrorBoundary';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
@@ -71,7 +73,8 @@ function App() {
                   <Footer />
                 </>
               } />
-              <Route path="/blog" element={<BlogPage />} />
+              {/*<Route path="/blog" element={<BlogPage />} />*/}
+              <Route path="/blog" element={<PerformanceOptimizedBlogPage />} />
               <Route path="/blog/:slug" element={<BlogDetail />} />
             </Routes>
           </RouteTransition>
