@@ -4,6 +4,7 @@ export const postsQuery = `
     _id,
     title,
     "slug": slug.current,
+    excerpt,
     "author": author->name,
     mainImage{
       asset->{

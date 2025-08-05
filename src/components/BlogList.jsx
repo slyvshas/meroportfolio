@@ -7,29 +7,59 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
   const { posts, loading } = usePosts();
   const [imageErrors, setImageErrors] = useState({});
 
+  // Debug logging
+  console.log('BlogList - posts:', posts);
+  console.log('BlogList - loading:', loading);
+  console.log('BlogList - posts length:', posts?.length);
+
   // Filter and search posts
   const filteredPosts = useMemo(() => {
-    if (!posts) return [];
+    if (!posts || !Array.isArray(posts)) return [];
     
     return posts.filter(post => {
       // Search filter
       const matchesSearch = !searchTerm || 
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.author?.toLowerCase().includes(searchTerm.toLowerCase());
       
       // Category filter
       const matchesCategory = selectedCategory === 'all' || 
         (post.categories && post.categories.some(cat => 
-          cat.title.toLowerCase() === selectedCategory.toLowerCase()
+          cat.title?.toLowerCase() === selectedCategory.toLowerCase()
         ));
       
       return matchesSearch && matchesCategory;
     });
   }, [posts, searchTerm, selectedCategory]);
 
+  // Debug info display (moved after filteredPosts definition)
+  const debugInfo = {
+    postsLength: posts?.length || 0,
+    loading,
+    searchTerm,
+    selectedCategory,
+    viewMode,
+    filteredPostsLength: filteredPosts.length
+  };
+
+  console.log('BlogList - debug info:', debugInfo);
+  
+  // Debug individual posts
+  if (filteredPosts.length > 0) {
+    console.log('First post data:', filteredPosts[0]);
+    console.log('First post slug:', filteredPosts[0]?.slug);
+  }
+
   const handleImageError = (postId) => {
     setImageErrors(prev => ({ ...prev, [postId]: true }));
+  };
+
+  const handlePostClick = (post) => {
+    console.log('Clicked post:', post);
+    console.log('Post slug:', post.slug);
+    console.log('Post title:', post.title);
+    console.log('Generated URL:', `/blog/${post.slug || 'no-slug'}`);
   };
 
   if (loading) return (
@@ -50,8 +80,39 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
     </div>
   );
 
+  // No posts found state
+  if (!loading && (!posts || posts.length === 0)) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 sm:py-32 text-center">
+        <div className="w-16 h-16 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/20">
+          <div className="w-8 h-8 bg-gradient-to-br from-[#D1B2FF] to-[#FFFFB2] rounded-full animate-pulse"></div>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">No articles found</h3>
+        <p className="text-gray-400 text-sm sm:text-base max-w-md">
+          No blog posts were found. This could be due to:
+        </p>
+        <ul className="text-gray-400 text-sm sm:text-base max-w-md mt-2 text-left">
+          <li>• No posts published in Sanity CMS</li>
+          <li>• Connection issue with Sanity</li>
+          <li>• Incorrect project configuration</li>
+        </ul>
+        <div className="mt-6 p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-white/20">
+          <p className="text-gray-300 text-xs font-mono">
+            Debug Info: Posts array length: {posts?.length || 'undefined'}
+          </p>
+          <p className="text-gray-300 text-xs font-mono mt-2">
+            Loading state: {loading ? 'true' : 'false'}
+          </p>
+          <p className="text-gray-300 text-xs font-mono mt-2">
+            Posts type: {Array.isArray(posts) ? 'Array' : typeof posts}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // No results state
-  if (filteredPosts.length === 0 && posts.length > 0) {
+  if (filteredPosts.length === 0 && posts && posts.length > 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 sm:py-32 text-center">
         <div className="w-16 h-16 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/20">
@@ -69,7 +130,7 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
   const GridView = () => (
     <div className="grid gap-6 sm:gap-8 md:gap-12 lg:grid-cols-2 xl:grid-cols-3">
       {filteredPosts.map((post, index) => (
-        <Link to={`/blog/${post.slug}`} key={post._id} className="group block">
+        <Link to={`/blog/${post.slug || 'no-slug'}`} key={post._id} className="group block" onClick={() => handlePostClick(post)}>
           <article className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:from-white/[0.08] hover:to-white/[0.04] hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/20 h-full flex flex-col">
             
             {/* Featured image */}
@@ -187,7 +248,7 @@ export default function BlogList({ searchTerm = '', selectedCategory = 'all', vi
   const ListView = () => (
     <div className="space-y-6 sm:space-y-8">
       {filteredPosts.map((post, index) => (
-        <Link to={`/blog/${post.slug}`} key={post._id} className="group block">
+        <Link to={`/blog/${post.slug || 'no-slug'}`} key={post._id} className="group block" onClick={() => handlePostClick(post)}>
           <article className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/10 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:from-white/[0.08] hover:to-white/[0.04] hover:scale-[1.01] hover:shadow-2xl hover:shadow-black/20">
             
             <div className="p-4 sm:p-6 lg:p-8">

@@ -9,10 +9,21 @@ export default function BlogDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('Current slug:', slug); // Debug log
+    console.log('Slug type:', typeof slug);
+    console.log('Slug length:', slug?.length);
+    
+    if (!slug) {
+      console.error('Slug is null or undefined');
+      setLoading(false);
+      return;
+    }
+    
     sanity.fetch(
       `*[_type == "post" && slug.current == $slug][0]{
         _id,
         title,
+        "slug": slug.current,
         author,
         "authorName": author->name,
         mainImage{asset->{url}},
@@ -28,26 +39,11 @@ export default function BlogDetail() {
       }`,
       { slug }
     ).then((data) => {
-      console.log('Fetched blog post data:', data); // Debug log
-      
-      // Handle both reference and string author fields
+      console.log('Fetched blog post data:', data);
+
       if (data) {
-        // Try different author field possibilities
         data.author = data.authorName || data.author || 'Unknown Author';
-        console.log('Processed author:', data.author); // Debug log
-        
-        // Handle date - try multiple date fields
         data.publishedAt = data.publishedAt || data._createdAt || data._updatedAt;
-        console.log('Published date (raw):', data.publishedAt); // Debug log
-        console.log('Created date:', data._createdAt); // Debug log
-        console.log('Updated date:', data._updatedAt); // Debug log
-        
-        // Validate date format
-        if (data.publishedAt) {
-          const date = new Date(data.publishedAt);
-          console.log('Parsed date:', date); // Debug log
-          console.log('Is valid date:', !isNaN(date.getTime())); // Debug log
-        }
       }
       setPost(data);
       setLoading(false);
@@ -61,4 +57,4 @@ export default function BlogDetail() {
   if (!post) return <div className="text-center text-white py-20">Blog post not found.</div>;
 
   return <BlogPost post={post} />;
-} 
+}
